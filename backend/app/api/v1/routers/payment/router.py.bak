@@ -1,0 +1,143 @@
+from __future__ import annotations
+
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.core.database.session import get_db
+from app.dependencies import get_current_user, require_admin
+from app.models.order import Order
+from app.models.payment import Payment
+from app.models.user import User
+from app.schemas.payment import (
+    PaymentCreate,
+    PaymentResponse,
+    PaymentStatusUpdate,
+)
+from app.services.payment import (
+    create_payment,
+    get_payment,
+    get_payment_by_order,
+    update_payment_status,
+)
+
+
+router = APIRouter(
+    prefix="/payments",
+    tags=["Payments"],
+)
+
+
+async def require_order_owner(
+    order_id: int,
+    current_user: User,
+    db: AsyncSession,
+) -> Order:
+    result = await db.execute(
+        select(Order).where(
+            Order.id == order_id,
+        )
+    )
+
+    order = result.scalar_one_or_none()
+
+    if order is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Order not found",
+        )
+
+    if (
+        current_user.role != "admin"
+        and order.user_id != current_user.id
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have permission to access this order",
+        )
+
+    return order
+
+
+@router.post(
+    "",
+    response_model=PaymentResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+async def create_payment_endpoint(
+    data: PaymentCreate,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    await require_order_owner(
+        data.order_id,
+        current_user,
+        db,
+    )
+
+    return await create_payment(
+        db,
+        data,
+    )
+
+
+@router.get(
+    "/{payment_id}",
+    response_model=PaymentResponse,
+)
+async def get_payment_endpoint(
+    payment_id: int,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    payment = await get_payment(
+        db,
+        payment_id,
+    )
+
+    if current_user.role != "admin":
+        await require_order_owner(
+            payment.order_id,
+            current_user,
+            db,
+        )
+
+    return payment
+
+
+@router.get(
+    "/orders/{order_id}",
+    response_model=PaymentResponse | None,
+)
+async def get_order_payment_endpoint(
+    order_id: int,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    await require_order_owner(
+        order_id,
+        current_user,
+        db,
+    )
+
+    return await get_payment_by_order(
+        db,
+        order_id,
+    )
+
+
+@router.patch(
+    "/{payment_id}/status",
+    response_model=PaymentResponse,
+)
+async def update_payment_status_endpoint(
+    payment_id: int,
+    data: PaymentStatusUpdate,
+    current_user: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    return await update_payment_status(
+        db,
+        payment_id,
+        data,
+    )

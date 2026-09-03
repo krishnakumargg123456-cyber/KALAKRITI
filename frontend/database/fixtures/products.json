@@ -1,0 +1,16 @@
+{
+  "products": [
+    {
+      "name": "Handwoven Banarasi Dupatta",
+      "slug": "handwoven-banarasi-dupatta",
+      "price": 2499,
+      "currency": "INR"
+    },
+    {
+      "name": "Madhubani Art Panel",
+      "slug": "madhubani-art-panel",
+      "price": 1899,
+      "currency": "INR"
+    }
+  ]
+}

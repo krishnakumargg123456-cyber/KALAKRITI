@@ -1,0 +1,9 @@
+{
+  "artisans": [],
+  "categories": [],
+  "products": [],
+  "notes": [
+    "Use backend seed scripts for database insertion.",
+    "Do not store credentials or secrets in fixtures."
+  ]
+}

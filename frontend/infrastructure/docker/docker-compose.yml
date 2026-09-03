@@ -1,0 +1,14 @@
+services:
+
+  redis:
+    image: redis:7-alpine
+    container_name: kalakriti-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - kalakriti_redis_data:/data
+    command: redis-server --appendonly yes
+
+volumes:
+  kalakriti_redis_data:
