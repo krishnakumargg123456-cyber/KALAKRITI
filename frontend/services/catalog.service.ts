@@ -1,4 +1,4 @@
-import { productsApi } from "@/lib/api/products";
+import { productsApi, ProductCreateData, ProductUpdateData } from "@/lib/api/products";
 import { getCategories, getCategory } from "@/lib/api/categories";
 
 export const catalogService = {
@@ -11,10 +11,10 @@ export const catalogService = {
   getProductById: (id: string) =>
     productsApi.getById(id),
 
-  createProduct: (data: Record<string, unknown>) =>
+  createProduct: (data: ProductCreateData) =>
     productsApi.create(data),
 
-  updateProduct: (id: string, data: Record<string, unknown>) =>
+  updateProduct: (id: string, data: ProductUpdateData) =>
     productsApi.update(id, data),
 
   deleteProduct: (id: string) =>
