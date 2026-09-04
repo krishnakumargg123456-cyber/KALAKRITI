@@ -1,7 +1,8 @@
-﻿"use client";
+"use client";
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   ArrowRight,
   CheckCircle2,
@@ -15,6 +16,7 @@ import {
 import { createMyArtisan } from "@/lib/api/artisans";
 
 export default function ArtisanOnboardingPage() {
+  const router = useRouter();
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -48,7 +50,7 @@ export default function ArtisanOnboardingPage() {
         district: district || null,
       });
 
-      setSubmitted(true);
+      router.replace("/artisan/verification");
     } catch (err: any) {
       const responseMessage =
         err?.response?.data?.detail ||

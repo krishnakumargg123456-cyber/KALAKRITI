@@ -1,9 +1,9 @@
-﻿"use client";
+"use client";
 
 import { create } from "zustand";
 
 type User = {
-  id: number;
+  id: string;
   name: string;
   email: string;
   role?: string;

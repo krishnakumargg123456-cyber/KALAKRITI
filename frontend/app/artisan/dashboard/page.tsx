@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useAuthStore } from "@/lib/store/auth-store";
 
 import {
   ArrowUpRight,
@@ -45,6 +45,8 @@ const tools = [
 ];
 
 export default function ArtisanDashboardPage() {
+  const user = useAuthStore((state) => state.user);
+  const artisanName = user?.name?.trim() || "Artisan";
   return (
     <ArtisanRouteGuard>
       <main className="min-h-screen bg-[#f7f0df] text-[#351716]">
@@ -57,7 +59,7 @@ export default function ArtisanDashboardPage() {
             </div>
 
             <h1 className="font-serif text-3xl font-bold text-[#531c1d] sm:text-4xl">
-              Namaste, Artisan
+              Namaste, {artisanName}
             </h1>
 
             <p className="mt-1 max-w-2xl text-sm leading-6 text-[#806b5d]">

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
@@ -23,13 +23,25 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await authApi.login({ email, password });
+      await authApi.login({ email, password });
 
-      const loggedInUser = response?.data?.user;
+      const meResponse = await authApi.me();
+      const profile = meResponse?.data;
 
-      if (loggedInUser) {
-        setUser(loggedInUser);
+      const loggedInUser = profile
+        ? {
+            id: profile.id,
+            name: profile.name ?? profile.full_name ?? "",
+            email: profile.email ?? email,
+            role: profile.role,
+          }
+        : null;
+
+      if (!loggedInUser) {
+        throw new Error("Unable to load your account profile.");
       }
+
+      setUser(loggedInUser);
 
       const requestedRedirect =
         typeof window !== "undefined"
