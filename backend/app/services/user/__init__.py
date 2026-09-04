@@ -4,3 +4,5 @@ __all__ = [
     "get_user",
     "update_user",
 ]
+
+from .service import delete_user
