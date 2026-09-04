@@ -48,6 +48,8 @@ export default function LoginPage() {
           ? new URLSearchParams(window.location.search).get("redirect")
           : null;
 
+      console.log("KALAKRITI LOGIN PROFILE:", profile);
+      console.log("KALAKRITI LOGIN ROLE:", loggedInUser?.role);
       const userRole = String(loggedInUser?.role || "").toLowerCase();
 
       if (userRole === "artisan") {

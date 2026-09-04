@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import { useAuthStore } from "@/lib/store/auth-store";
 
 import {
@@ -16,6 +18,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import ArtisanRouteGuard from "@/components/artisan/ArtisanRouteGuard";
+import { getMyArtisan } from "@/lib/api/artisans";
 
 const tools = [
   {
@@ -46,7 +49,22 @@ const tools = [
 
 export default function ArtisanDashboardPage() {
   const user = useAuthStore((state) => state.user);
-  const artisanName = user?.name?.trim() || "Artisan";
+  const [artisanName, setArtisanName] = useState("Artisan");
+
+  useEffect(() => {
+    async function loadArtisanProfile() {
+      try {
+        const response = await getMyArtisan();
+        const shopName = response.data?.shop_name?.trim();
+
+        setArtisanName(shopName || user?.name?.trim() || "Artisan");
+      } catch {
+        setArtisanName(user?.name?.trim() || "Artisan");
+      }
+    }
+
+    loadArtisanProfile();
+  }, [user?.name]);
   return (
     <ArtisanRouteGuard>
       <main className="min-h-screen bg-[#f7f0df] text-[#351716]">

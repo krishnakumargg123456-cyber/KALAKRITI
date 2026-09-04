@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -14,12 +14,74 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { createMyArtisan } from "@/lib/api/artisans";
+import { usersApi } from "@/lib/api/users";
+import { useAuthStore } from "@/lib/store/auth-store";
 
 export default function ArtisanOnboardingPage() {
   const router = useRouter();
+  const setUser = useAuthStore((state) => state.setUser);
+
+  const [accountName, setAccountName] = useState("");
+  const [accountEmail, setAccountEmail] = useState("");
+  const [checkingAccount, setCheckingAccount] = useState(true);
+
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadAccount() {
+      try {
+        const response = await usersApi.getProfile();
+        const profile = response?.data;
+
+        if (!profile) {
+          throw new Error("Unable to load your artisan account.");
+        }
+
+        const role = String(profile.role ?? "").toLowerCase();
+
+        if (role !== "artisan") {
+          router.replace("/artisan");
+          return;
+        }
+
+        const name = profile.name ?? profile.full_name ?? "";
+        const email = profile.email ?? "";
+
+        if (active) {
+          setAccountName(name);
+          setAccountEmail(email);
+
+          setUser({
+            id: profile.id,
+            name,
+            email,
+            role: profile.role,
+          });
+
+          setCheckingAccount(false);
+        }
+      } catch (err: any) {
+        if (active) {
+          setError(
+            err?.response?.data?.detail ||
+              err?.message ||
+              "Unable to verify your artisan account."
+          );
+          setCheckingAccount(false);
+        }
+      }
+    }
+
+    loadAccount();
+
+    return () => {
+      active = false;
+    };
+  }, [router, setUser]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -50,7 +112,7 @@ export default function ArtisanOnboardingPage() {
         district: district || null,
       });
 
-      router.replace("/artisan/verification");
+      setSubmitted(true);
     } catch (err: any) {
       const responseMessage =
         err?.response?.data?.detail ||
@@ -69,6 +131,24 @@ export default function ArtisanOnboardingPage() {
     }
   }
 
+  if (checkingAccount) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-cream px-6 text-maroon">
+        <div className="rounded-2xl border border-gold/30 bg-paper px-8 py-7 text-center shadow-sm">
+          <Loader2 className="mx-auto h-8 w-8 animate-spin text-gold" />
+
+          <p className="mt-4 font-serif text-lg font-semibold">
+            Preparing Your Artisan Studio...
+          </p>
+
+          <p className="mt-1 text-sm text-muted">
+            Verifying your artisan account.
+          </p>
+        </div>
+      </main>
+    );
+  }
+
   if (submitted) {
     return (
       <main className="min-h-screen bg-cream px-4 py-16">
@@ -81,8 +161,7 @@ export default function ArtisanOnboardingPage() {
 
           <p className="mx-auto mt-4 max-w-xl leading-7 text-brown/70">
             Your artisan profile has been successfully created and is now
-            pending verification. You can continue preparing your KALAKRITI
-            artisan profile while verification is completed.
+            pending verification.
           </p>
 
           <div className="mt-6 rounded-xl border border-gold/30 bg-gold/5 p-4 text-left">
@@ -90,27 +169,26 @@ export default function ArtisanOnboardingPage() {
               <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-gold" />
 
               <p className="text-sm leading-6 text-brown/70">
-                Your profile is currently marked as unverified. KALAKRITI
-                verifies artisan identity and craft authenticity before final
-                approval.
+                Your profile is currently unverified. KALAKRITI verifies
+                artisan identity and craft authenticity before final approval.
               </p>
             </div>
           </div>
 
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Link
-              href="/artisan/profile"
+              href="/artisan/verification"
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-maroon px-6 py-3 text-sm font-semibold text-cream transition hover:bg-maroon/90"
             >
-              View Artisan Profile
+              Continue Verification
               <ArrowRight className="h-4 w-4" />
             </Link>
 
             <Link
-              href="/artisan/verification"
+              href="/artisan/profile"
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-maroon/30 px-6 py-3 text-sm font-semibold text-maroon transition hover:bg-cream"
             >
-              Continue Verification
+              View Artisan Profile
             </Link>
           </div>
         </div>
@@ -123,18 +201,39 @@ export default function ArtisanOnboardingPage() {
       <div className="mx-auto max-w-3xl">
         <div className="mb-8 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold">
-            Join KALAKRITI
+            KALAKRITI Artisan Studio
           </p>
 
           <h1 className="mt-3 font-serif text-4xl font-bold text-maroon">
-            Artisan Onboarding
+            Complete Your Artisan Profile
           </h1>
 
           <p className="mx-auto mt-4 max-w-2xl leading-7 text-brown/70">
-            Tell us about yourself and the traditional craft you practise.
-            These details help build your artisan profile and begin the
-            verification journey.
+            Your artisan account is ready. Now tell us about your craft,
+            tradition and the place where you create.
           </p>
+        </div>
+
+        <div className="mb-6 rounded-2xl border border-gold/30 bg-paper p-5 shadow-sm">
+          <div className="flex items-start gap-4">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-cream text-maroon">
+              <UserRound className="h-5 w-5" />
+            </div>
+
+            <div className="min-w-0">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">
+                Artisan Account
+              </p>
+
+              <p className="mt-1 font-serif text-lg font-bold text-maroon">
+                {accountName || "Artisan"}
+              </p>
+
+              <p className="mt-1 truncate text-sm text-muted">
+                {accountEmail}
+              </p>
+            </div>
+          </div>
         </div>
 
         <form
@@ -147,57 +246,6 @@ export default function ArtisanOnboardingPage() {
               <p>{error}</p>
             </div>
           )}
-
-          <section>
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-cream text-gold">
-                <UserRound className="h-5 w-5" />
-              </div>
-
-              <div>
-                <h2 className="font-serif text-xl font-bold text-maroon">
-                  About You
-                </h2>
-
-                <p className="text-xs text-brown/55">
-                  Basic information for your artisan profile.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-5 grid gap-5 md:grid-cols-2">
-              <Field
-                id="name"
-                name="name"
-                label="Full Name"
-                type="text"
-                placeholder="Your full name"
-                required
-              />
-
-              <Field
-                id="phone"
-                name="phone"
-                label="Phone"
-                type="tel"
-                placeholder="+91"
-                required
-              />
-
-              <div className="md:col-span-2">
-                <Field
-                  id="email"
-                  name="email"
-                  label="Email"
-                  type="email"
-                  placeholder="you@example.com"
-                  required
-                />
-              </div>
-            </div>
-          </section>
-
-          <div className="my-8 border-t border-border" />
 
           <section>
             <div className="flex items-center gap-3">
@@ -229,8 +277,8 @@ export default function ArtisanOnboardingPage() {
                   id="craft"
                   name="craft"
                   required
-                  className="w-full rounded-lg border border-border bg-cream px-4 py-3 outline-none focus:border-gold"
                   defaultValue=""
+                  className="w-full rounded-lg border border-border bg-cream px-4 py-3 outline-none focus:border-gold"
                 >
                   <option value="" disabled>
                     Select craft
@@ -329,9 +377,9 @@ export default function ArtisanOnboardingPage() {
             <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-gold" />
 
             <p className="text-sm leading-6 text-brown/70">
-              KALAKRITI verifies artisan identity and craft authenticity before
-              approving an artisan profile. Please provide accurate
-              information.
+              Your artisan account is already securely created. KALAKRITI
+              verifies artisan identity and craft authenticity before approving
+              an artisan profile.
             </p>
           </div>
 

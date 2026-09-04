@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -11,7 +11,6 @@ export default function ArtisanRouteGuard({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const user = useAuthStore((state) => state.user);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const setUser = useAuthStore((state) => state.setUser);
   const [checking, setChecking] = useState(true);
@@ -24,39 +23,45 @@ export default function ArtisanRouteGuard({
         const response = await usersApi.getProfile();
         const profile = response.data;
 
-        const currentUser = {
-          id: profile.id,
-          name: profile.name ?? profile.full_name ?? "",
-          email: profile.email,
-          role: profile.role,
-        };
+        const role = String(profile.role ?? "").toLowerCase();
 
-        setUser(currentUser);
-
-        if (String(profile.role ?? "").toLowerCase() !== "artisan") {
+        if (role !== "artisan") {
           router.replace("/");
           return;
         }
+
+        setUser({
+          id: String(profile.id),
+          name: profile.name ?? profile.full_name ?? "",
+          email: profile.email ?? "",
+          role: profile.role,
+        });
 
         if (active) {
           setChecking(false);
         }
       } catch {
-        router.replace(
-          `/auth/login?redirect=${encodeURIComponent(window.location.pathname)}`
-        );
+        if (active) {
+          router.replace(
+            `/artisan/login?redirect=${encodeURIComponent(
+              window.location.pathname
+            )}`
+          );
+        }
       }
     }
 
-    if (!isAuthenticated && !localStorage.getItem("access_token")) {
-      router.replace(
-        `/auth/login?redirect=${encodeURIComponent(window.location.pathname)}`
-      );
-      return;
-    }
+    const token =
+      typeof window !== "undefined"
+        ? localStorage.getItem("access_token")
+        : null;
 
-    if (user?.role && String(user.role).toLowerCase() !== "artisan") {
-      router.replace("/");
+    if (!isAuthenticated && !token) {
+      router.replace(
+        `/artisan/login?redirect=${encodeURIComponent(
+          window.location.pathname
+        )}`
+      );
       return;
     }
 
@@ -65,7 +70,7 @@ export default function ArtisanRouteGuard({
     return () => {
       active = false;
     };
-  }, [isAuthenticated, router, setUser, user]);
+  }, [isAuthenticated, router, setUser]);
 
   if (checking) {
     return (

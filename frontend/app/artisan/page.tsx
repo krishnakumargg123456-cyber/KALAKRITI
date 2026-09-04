@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -53,7 +53,7 @@ export default function ArtisanPortalPage() {
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2">
             <Link
-              href="/auth/login?redirect=/artisan/dashboard"
+              href="/artisan/login"
               className="group flex items-center justify-center gap-3 rounded-lg bg-maroon px-6 py-4 font-semibold text-white transition hover:bg-maroon-light"
             >
               <LogIn className="h-5 w-5" />
