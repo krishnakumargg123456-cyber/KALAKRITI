@@ -55,7 +55,7 @@ export default function ArtisanDashboardPage() {
     async function loadArtisanProfile() {
       try {
         const response = await getMyArtisan();
-        const shopName = response.data?.shop_name?.trim();
+        const shopName = response?.shop_name?.trim();
 
         setArtisanName(shopName || user?.name?.trim() || "Artisan");
       } catch {

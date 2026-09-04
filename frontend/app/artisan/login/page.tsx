@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import {
   ArrowRight,
   Eye,
@@ -14,7 +15,7 @@ import {
 import { authApi } from "@/lib/api/auth";
 import { useAuthStore } from "@/lib/store/auth-store";
 
-export default function ArtisanLoginPage() {
+function ArtisanLoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const setUser = useAuthStore((state) => state.setUser);
@@ -244,5 +245,19 @@ export default function ArtisanLoginPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function ArtisanLoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="flex min-h-screen items-center justify-center bg-cream text-maroon">
+          <p className="text-sm font-medium">Opening Artisan Login...</p>
+        </main>
+      }
+    >
+      <ArtisanLoginForm />
+    </Suspense>
   );
 }
