@@ -13,6 +13,7 @@ import {
   Info,
   Package,
   ShoppingBag,
+  Settings,
   Star,
   Wallet,
 } from "lucide-react";
@@ -93,6 +94,15 @@ export default function ArtisanDashboardPage() {
             >
               <BookOpen className="h-4 w-4" />
               Stories
+            </Link>
+
+            <Link
+              href="/artisan/settings"
+              className="flex h-11 items-center gap-2 rounded-xl border border-[#c9a45c]/35 bg-[#fffaf0] px-4 text-[#641f20] transition hover:bg-[#f8edcf]"
+              aria-label="Artisan settings"
+            >
+              <Settings className="h-5 w-5" />
+              <span className="hidden text-sm font-semibold sm:inline">Settings</span>
             </Link>
 
             <Link
