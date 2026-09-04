@@ -4,6 +4,9 @@ export const usersApi = {
   getProfile: () =>
     api.get("/users/me"),
 
+  deleteAccount: () =>
+    api.delete("/users/me"),
+
   updateProfile: (data: {
     name?: string;
     email?: string;

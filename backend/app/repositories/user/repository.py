@@ -34,6 +34,14 @@ class UserRepository:
 
         return result.scalar_one_or_none()
 
+    async def delete(
+        self,
+        db: AsyncSession,
+        user: User,
+    ) -> None:
+        await db.delete(user)
+        await db.flush()
+
     async def update(
         self,
         db: AsyncSession,

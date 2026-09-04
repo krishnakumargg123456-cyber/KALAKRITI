@@ -9,7 +9,7 @@ from app.core.database.session import get_db
 from app.dependencies import get_current_user, require_admin
 from app.models.user import User
 from app.schemas.user import UserResponse, UserUpdate
-from app.services.user import get_user, update_user
+from app.services.user import delete_user, get_user, update_user
 
 
 router = APIRouter(
@@ -44,6 +44,23 @@ async def update_current_user_profile(
         user=current_user,
         data=data,
     )
+
+
+@router.delete(
+    "/me",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+async def delete_current_user_account(
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    await delete_user(
+        db=db,
+        user=current_user,
+    )
+
+    await db.commit()
+    return None
 
 
 @router.get(
