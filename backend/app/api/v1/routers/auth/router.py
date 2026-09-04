@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+﻿from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.security.jwt import create_access_token
@@ -51,6 +51,7 @@ async def register(
             email=data.email,
             full_name=data.full_name,
             password=data.password,
+            role=data.role,
         )
     except ValueError as exc:
         raise HTTPException(

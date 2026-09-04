@@ -1,7 +1,8 @@
-﻿"use client";
+"use client";
 
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import ArtisanRouteGuard from "@/components/artisan/ArtisanRouteGuard";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -441,7 +442,8 @@ export default function NewArtisanProductPage() {
   }
 
   return (
-    <main className="min-h-screen bg-cream px-4 py-8 md:px-8">
+    <ArtisanRouteGuard>
+      <main className="min-h-screen bg-cream px-4 py-8 md:px-8">
       <div className="mx-auto max-w-4xl">
         <Link
           href="/artisan/products"
@@ -864,5 +866,7 @@ export default function NewArtisanProductPage() {
         </form>
       </div>
     </main>
-  );
+    </ArtisanRouteGuard>
+  )
 }
+

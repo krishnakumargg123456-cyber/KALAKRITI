@@ -1,6 +1,7 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
+import ArtisanRouteGuard from "@/components/artisan/ArtisanRouteGuard";
 import { useEffect, useMemo, useState } from "react";
 import {
   Edit3,
@@ -135,7 +136,8 @@ export default function ArtisanProductsPage() {
   const totalSales = 0;
 
   return (
-    <main className="min-h-screen bg-cream px-4 py-8 md:px-8">
+    <ArtisanRouteGuard>
+      <main className="min-h-screen bg-cream px-4 py-8 md:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
           <div>
@@ -379,5 +381,7 @@ export default function ArtisanProductsPage() {
         </div>
       </div>
     </main>
-  );
+    </ArtisanRouteGuard>
+  )
 }
+

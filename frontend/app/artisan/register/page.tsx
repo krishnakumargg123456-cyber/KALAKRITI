@@ -76,7 +76,7 @@ export default function ArtisanRegisterPage() {
 
           <div className="mt-7 grid gap-3 sm:grid-cols-2">
             <Link
-              href="/auth/register"
+              href="/auth/register?role=artisan&redirect=/artisan/onboarding"
               className="group inline-flex items-center justify-center gap-2 rounded-lg bg-maroon px-6 py-3.5 text-sm font-semibold text-cream transition hover:bg-maroon/90"
             >
               <UserPlus className="h-4 w-4" />
@@ -182,3 +182,4 @@ function Benefit({
     </div>
   );
 }
+

@@ -121,3 +121,6 @@ class ArtisanResponse(BaseModel):
 
     is_verified: bool
     is_active: bool
+
+
+

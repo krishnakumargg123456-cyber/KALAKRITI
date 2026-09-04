@@ -25,8 +25,10 @@ export default function LoginPage() {
     try {
       const response = await authApi.login({ email, password });
 
-      if (response?.data?.user) {
-        setUser(response.data.user);
+      const loggedInUser = response?.data?.user;
+
+      if (loggedInUser) {
+        setUser(loggedInUser);
       }
 
       const requestedRedirect =
@@ -34,12 +36,16 @@ export default function LoginPage() {
           ? new URLSearchParams(window.location.search).get("redirect")
           : null;
 
-      const userRole = response?.data?.user?.role;
+      const userRole = String(loggedInUser?.role || "").toLowerCase();
 
       if (userRole === "artisan") {
-        router.push(requestedRedirect || "/artisan/dashboard");
+        router.replace(
+          requestedRedirect?.startsWith("/artisan/")
+            ? requestedRedirect
+            : "/artisan/dashboard"
+        );
       } else {
-        router.push("/");
+        router.replace("/");
       }
     } catch (err) {
       setError(
@@ -155,10 +161,18 @@ export default function LoginPage() {
               Create an account
             </Link>
           </p>
+
+          <p className="mt-3 text-center text-sm text-muted">
+            Want to sell your craft?{" "}
+            <Link
+              href="/artisan"
+              className="font-semibold text-maroon hover:underline"
+            >
+              Join as Artisan
+            </Link>
+          </p>
         </div>
       </div>
     </main>
   );
 }
-
-

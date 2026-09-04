@@ -1,13 +1,20 @@
 "use client";
 
+import { Suspense } from "react";
+
 import { FormEvent, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { authApi } from "@/lib/api/auth";
 
-export default function RegisterPage() {
+function RegisterPageContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const isArtisan = searchParams.get("role") === "artisan";
+  const redirect = searchParams.get("redirect");
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,8 +43,17 @@ export default function RegisterPage() {
         name: name.trim(),
         email: email.trim(),
         password,
+        role: isArtisan ? "artisan" : "customer",
       });
-      router.push("/auth/login?registered=true");
+
+      if (isArtisan) {
+        const nextPath = redirect || "/artisan/onboarding";
+        router.push(
+          `/auth/login?registered=true&redirect=${encodeURIComponent(nextPath)}`
+        );
+      } else {
+        router.push("/auth/login?registered=true");
+      }
     } catch (err: unknown) {
       const errorResponse = err as {
         response?: {
@@ -47,6 +63,7 @@ export default function RegisterPage() {
           };
         };
       };
+
       setError(
         errorResponse.response?.data?.detail ||
           errorResponse.response?.data?.message ||
@@ -62,15 +79,17 @@ export default function RegisterPage() {
       <div className="w-full max-w-md rounded-card border border-gold/40 bg-white/80 p-8 shadow-lg">
         <div className="mb-8 text-center">
           <p className="mb-2 text-sm font-semibold uppercase tracking-[0.25em] text-gold">
-            KALAKRITI
+            KALAKRITI {isArtisan ? "Artisan Portal" : ""}
           </p>
 
           <h1 className="font-serif text-3xl font-bold text-maroon">
-            Create Your Account
+            {isArtisan ? "Join KALAKRITI as an Artisan" : "Create Your Account"}
           </h1>
 
           <p className="mt-2 text-sm text-gray-600">
-            Join the KALAKRITI craft heritage community.
+            {isArtisan
+              ? "Create your account and begin your artisan journey with KALAKRITI."
+              : "Join the KALAKRITI craft heritage community."}
           </p>
         </div>
 
@@ -91,6 +110,7 @@ export default function RegisterPage() {
 
               <input
                 type="text"
+                required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Your full name"
@@ -110,6 +130,7 @@ export default function RegisterPage() {
 
               <input
                 type="email"
+                required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
@@ -129,6 +150,7 @@ export default function RegisterPage() {
 
               <input
                 type={showPassword ? "text" : "password"}
+                required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Minimum 8 characters"
@@ -156,22 +178,52 @@ export default function RegisterPage() {
             disabled={loading}
             className="w-full rounded-lg bg-maroon px-5 py-3 font-semibold text-white transition hover:bg-maroon-light disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {loading ? "Creating Account..." : "Create Account"}
+            {loading
+              ? "Creating Account..."
+              : isArtisan
+                ? "Create Artisan Account"
+                : "Create Account"}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-gray-600">
-          Already have an account?{" "}
-          <Link
-            href="/auth/login"
-            className="font-semibold text-maroon hover:underline"
-          >
-            Sign in
-          </Link>
-        </p>
+        <div className="mt-6 text-center text-sm text-gray-600">
+          <p>
+            Already have an account?{" "}
+            <Link
+              href={
+                isArtisan
+                  ? "/auth/login?redirect=/artisan/onboarding"
+                  : "/auth/login"
+              }
+              className="font-semibold text-maroon hover:underline"
+            >
+              {isArtisan ? "Artisan Login" : "Sign in"}
+            </Link>
+          </p>
+
+          {isArtisan && (
+            <Link
+              href="/artisan"
+              className="mt-3 inline-block text-xs font-medium text-gold hover:underline"
+            >
+              Back to Artisan Portal
+            </Link>
+          )}
+        </div>
       </div>
     </main>
   );
 }
-
-
+export default function RegisterPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="flex min-h-screen items-center justify-center bg-cream">
+          <div className="text-sm text-brown/70">Loading registration...</div>
+        </main>
+      }
+    >
+      <RegisterPageContent />
+    </Suspense>
+  );
+}

@@ -1,4 +1,4 @@
-from uuid import UUID
+﻿from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
@@ -7,6 +7,7 @@ class RegisterRequest(BaseModel):
     email: EmailStr
     full_name: str = Field(min_length=2, max_length=150)
     password: str = Field(min_length=8, max_length=128)
+    role: str = Field(default="customer")
 
 
 class LoginRequest(BaseModel):

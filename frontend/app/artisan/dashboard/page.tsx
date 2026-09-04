@@ -1,4 +1,6 @@
-﻿"use client";
+"use client";
+
+import { useState } from "react";
 
 import {
   ArrowUpRight,
@@ -13,6 +15,7 @@ import {
   Wallet,
 } from "lucide-react";
 import Link from "next/link";
+import ArtisanRouteGuard from "@/components/artisan/ArtisanRouteGuard";
 
 const tools = [
   {
@@ -43,7 +46,8 @@ const tools = [
 
 export default function ArtisanDashboardPage() {
   return (
-    <main className="min-h-screen bg-[#f7f0df] text-[#351716]">
+    <ArtisanRouteGuard>
+      <main className="min-h-screen bg-[#f7f0df] text-[#351716]">
       <div className="mx-auto max-w-[1500px] px-4 py-6 sm:px-6 lg:px-8">
         <header className="mb-7 flex flex-col gap-5 rounded-2xl border border-[#c9a45c]/30 bg-[#fbf7ed] px-5 py-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -308,6 +312,7 @@ export default function ArtisanDashboardPage() {
         </footer>
       </div>
     </main>
+    </ArtisanRouteGuard>
   );
 }
 
@@ -383,3 +388,5 @@ function DashboardCard({
     </Link>
   );
 }
+
+

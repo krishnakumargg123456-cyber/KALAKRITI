@@ -159,3 +159,6 @@ async def delete_artisan(
         db,
         artisan_id,
     )
+
+
+

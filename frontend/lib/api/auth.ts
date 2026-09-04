@@ -34,11 +34,13 @@ export const authApi = {
     name: string;
     email: string;
     password: string;
+    role?: "customer" | "artisan";
   }) => {
     return api.post("/auth/register", {
       email: data.email,
       full_name: data.name,
       password: data.password,
+      role: data.role ?? "customer",
     });
   },
 

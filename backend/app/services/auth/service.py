@@ -1,4 +1,4 @@
-from uuid import UUID, uuid4
+﻿from uuid import UUID, uuid4
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -22,11 +22,15 @@ async def register_user(
     email: str,
     full_name: str,
     password: str,
+    role: str = "customer",
 ) -> User:
     existing_user = await get_user_by_email(db, email)
 
     if existing_user:
         raise ValueError("Email already registered")
+
+    if role not in {"customer", "artisan"}:
+        raise ValueError("Invalid registration role")
 
     user = User(
         id=uuid4(),
@@ -35,7 +39,7 @@ async def register_user(
         password_hash=hash_password(password),
         is_active=True,
         is_verified=False,
-        role="customer",
+        role=role,
     )
 
     db.add(user)
