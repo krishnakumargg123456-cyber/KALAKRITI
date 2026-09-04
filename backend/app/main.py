@@ -29,6 +29,7 @@ app.add_middleware(
         "https://kalakriti-ashy.vercel.app",
         "https://kalakriti-marketplace.vercel.app",
     ],
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
