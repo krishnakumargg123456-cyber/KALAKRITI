@@ -390,7 +390,7 @@ export default function CraftHeritageDetailPage() {
 
             <p className="mt-5 text-sm leading-7 text-[#75665b]">
               Discover the artisans and communities who continue to practise
-              the skills behind India's living craft traditions.
+              the skills behind India&apos;s living craft traditions.
             </p>
 
             <Link
@@ -477,7 +477,7 @@ export default function CraftHeritageDetailPage() {
           </p>
 
           <h2 className="mx-auto mt-5 max-w-3xl font-serif text-4xl font-medium leading-tight text-[#fffaf0] md:text-5xl">
-            Bring a piece of India's craft heritage home.
+            Bring a piece of India&apos;s craft heritage home.
           </h2>
 
           <p className="mx-auto mt-6 max-w-2xl text-sm leading-7 text-[#f4ead8]/75 md:text-base">
