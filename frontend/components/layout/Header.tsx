@@ -5,8 +5,11 @@ import { useState } from "react";
 import MobileNav from "./MobileNav";
 import TopBar from "./TopBar";
 import Navbar from "./Navbar";
+import LanguageSelector from "@/components/i18n/LanguageSelector";
+import { useI18n } from "@/lib/i18n/context";
 
 export default function Header() {
+  const { messages } = useI18n();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -29,8 +32,9 @@ export default function Header() {
             </span>
           </Link>
 
-          <MobileNav
-            onMenuClick={() =>
+          <LanguageSelector className="mr-3" />
+
+          <MobileNav onMenuClick={() =>
               setMobileMenuOpen((current) => !current)
             }
           />
@@ -44,12 +48,12 @@ export default function Header() {
           <nav className="kalakriti-container px-4 py-4">
             {[
               ["Home", "/"],
-              ["Shop", "/shop"],
-              ["Artisans", "/artisans"],
-              ["Craft Heritage", "/craft-heritage"],
-              ["Our Story", "/our-story"],
-              ["Wishlist", "/wishlist"],
-              ["Account", "/account"],
+              [messages.navigation.shop, "/shop"],
+              [messages.navigation.artisans, "/artisans"],
+              [messages.navigation.craftHeritage, "/craft-heritage"],
+              [messages.navigation.ourStory, "/our-story"],
+              [messages.common.wishlist, "/wishlist"],
+              [messages.common.account, "/account"],
             ].map(([label, href]) => (
               <Link
                 key={href}

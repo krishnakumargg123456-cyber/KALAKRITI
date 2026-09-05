@@ -1,4 +1,4 @@
-﻿from uuid import UUID
+from uuid import UUID
 
 from fastapi import HTTPException, status
 from sqlalchemy import select

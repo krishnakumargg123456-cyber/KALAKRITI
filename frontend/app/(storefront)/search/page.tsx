@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import { useI18n } from "@/lib/i18n/context";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -12,6 +13,7 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { productsApi, type Product as ApiProduct } from "@/lib/api/products";
+import VoiceSearchButton from "@/components/search/VoiceSearchButton";
 
 type SearchProduct = {
   id: string;
@@ -79,6 +81,7 @@ const mapProduct = (product: ApiProduct): SearchProduct => {
 };
 
 export default function SearchPage() {
+  const { messages, locale } = useI18n();
   const [query, setQuery] = useState("");
   const [submittedQuery, setSubmittedQuery] = useState("");
   const [wishlist, setWishlist] = useState<string[]>([]);
@@ -97,6 +100,7 @@ export default function SearchPage() {
         setError("");
 
         const response = await productsApi.list({
+          search: submittedQuery.trim() || undefined,
           skip: 0,
           limit: 100,
         });
@@ -111,6 +115,7 @@ export default function SearchPage() {
       } catch {
         if (!mounted) return;
         setError("Unable to load products right now. Please try again.");
+        setProducts([]);
       } finally {
         if (mounted) {
           setLoading(false);
@@ -123,41 +128,24 @@ export default function SearchPage() {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [submittedQuery]);
 
   const results = useMemo(() => {
-    const normalized = submittedQuery.trim().toLowerCase();
-
-    if (!normalized) return [];
-
-    const terms = normalized.split(/\s+/);
-
-    const filtered = products.filter((product) => {
-      const searchable = [
-        product.name,
-        product.craft,
-        product.artisan,
-        product.region,
-      ]
-        .join(" ")
-        .toLowerCase();
-
-      return terms.every((term) => searchable.includes(term));
-    });
+    if (!submittedQuery.trim()) return [];
 
     if (sort === "Price: Low to High") {
-      return [...filtered].sort((a, b) => a.price - b.price);
+      return [...products].sort((a, b) => a.price - b.price);
     }
 
     if (sort === "Price: High to Low") {
-      return [...filtered].sort((a, b) => b.price - a.price);
+      return [...products].sort((a, b) => b.price - a.price);
     }
 
     if (sort === "Top Rated") {
-      return [...filtered].sort((a, b) => b.rating - a.rating);
+      return [...products].sort((a, b) => b.rating - a.rating);
     }
 
-    return filtered;
+    return products;
   }, [products, submittedQuery, sort]);
 
   const submitSearch = (value = query) => {
@@ -168,7 +156,17 @@ export default function SearchPage() {
       return;
     }
 
+    setQuery(cleaned);
     setSubmittedQuery(cleaned);
+  };
+
+  const handleVoiceTranscript = (value: string) => {
+    const cleaned = value.trim();
+
+    if (!cleaned) return;
+
+    setQuery(cleaned);
+    submitSearch(cleaned);
   };
 
   const toggleWishlist = (id: string) => {
@@ -210,7 +208,7 @@ export default function SearchPage() {
                 event.preventDefault();
                 submitSearch();
               }}
-              className="mt-7 flex items-center rounded-xl border border-[#b08a4a]/45 bg-[#fbf6e9] p-1.5 shadow-sm"
+              className="mt-7 flex items-center border border-[#b08a4a]/45 bg-[#fbf6e9] p-1.5 shadow-[0_12px_35px_rgba(67,35,25,0.06)]"
             >
               <SearchIcon className="ml-3 h-5 w-5 shrink-0 text-[#8b1e2d]" />
 
@@ -218,9 +216,15 @@ export default function SearchPage() {
                 type="search"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Search Madhubani, pottery, artisans..."
+                placeholder={messages.search.placeholder}
                 className="h-12 min-w-0 flex-1 bg-transparent px-3 text-sm outline-none placeholder:text-[#80665d]"
-                aria-label="Search products"
+                aria-label={messages.search.searchProducts}
+              />
+
+              <VoiceSearchButton
+                onTranscript={handleVoiceTranscript}
+                label={messages.common.voiceSearch}
+                locale={locale}
               />
 
               {query && (
@@ -231,7 +235,7 @@ export default function SearchPage() {
                     setSubmittedQuery("");
                   }}
                   className="mr-2 text-[#80665d] hover:text-[#8b1e2d]"
-                  aria-label="Clear search"
+                  aria-label={messages.search.clearSearch}
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -239,7 +243,7 @@ export default function SearchPage() {
 
               <button
                 type="submit"
-                className="rounded-lg bg-[#8b1e2d] px-5 py-3 text-sm font-bold text-[#fff8eb] transition hover:bg-[#741723]"
+                className="bg-[#8b1e2d] px-5 py-3 text-sm font-bold text-[#fff8eb] transition hover:bg-[#741723]"
               >
                 Search
               </button>
@@ -251,7 +255,7 @@ export default function SearchPage() {
       <div className="mx-auto max-w-7xl px-6 py-10 sm:px-8 lg:px-12 lg:py-14">
         {!submittedQuery ? (
           <section className="mx-auto max-w-4xl">
-            <div className="rounded-2xl border border-[#b08a4a]/35 bg-[#fbf6e9] p-7 sm:p-10">
+            <div className="border border-[#b08a4a]/35 bg-[#fbf6e9] p-7 sm:p-10">
               <div className="flex items-center gap-3">
                 <SlidersHorizontal className="h-5 w-5 text-[#8b1e2d]" />
                 <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#8b1e2d]">
@@ -276,7 +280,7 @@ export default function SearchPage() {
                       setQuery(item);
                       submitSearch(item);
                     }}
-                    className="rounded-full border border-[#b08a4a]/40 bg-[#f7f0df] px-4 py-2.5 text-sm font-semibold text-[#65443c] transition hover:border-[#8b1e2d]/40 hover:text-[#8b1e2d]"
+                    className="border border-[#b08a4a]/40 bg-[#f7f0df] px-4 py-2.5 text-sm font-semibold text-[#65443c] transition hover:border-[#8b1e2d]/40 hover:text-[#8b1e2d]"
                   >
                     {item}
                   </button>
@@ -292,7 +296,7 @@ export default function SearchPage() {
               ].map(([title, description]) => (
                 <div
                   key={title}
-                  className="rounded-xl border border-[#b08a4a]/30 bg-[#efe4ce]/60 p-6"
+                  className="border border-[#b08a4a]/30 bg-[#efe4ce]/60 p-6"
                 >
                   <h3 className="font-serif text-xl font-semibold text-[#4a211c]">
                     {title}
@@ -332,12 +336,16 @@ export default function SearchPage() {
                   value={sort}
                   onChange={(event) => setSort(event.target.value)}
                   className="h-10 rounded-lg border border-[#b08a4a]/35 bg-[#fbf6e9] px-3 text-xs font-semibold text-[#4a211c] outline-none"
-                  aria-label="Sort search results"
+                  aria-label={messages.search.sortResults}
                 >
-                  <option>Relevance</option>
-                  <option>Price: Low to High</option>
-                  <option>Price: High to Low</option>
-                  <option>Top Rated</option>
+                  <option value="Relevance">{messages.search.relevance}</option>
+                  <option value="Price: Low to High">
+                    {messages.search.priceLowToHigh}
+                  </option>
+                  <option value="Price: High to Low">
+                    {messages.search.priceHighToLow}
+                  </option>
+                  <option value="Top Rated">{messages.search.topRated}</option>
                 </select>
               </div>
             </div>
@@ -347,7 +355,7 @@ export default function SearchPage() {
                 {Array.from({ length: 8 }).map((_, index) => (
                   <div
                     key={index}
-                    className="overflow-hidden rounded-xl border border-[#b08a4a]/20 bg-[#fbf6e9]"
+                    className="overflow-hidden border border-[#b08a4a]/20 bg-[#fbf6e9]"
                   >
                     <div className="aspect-square animate-pulse bg-[#efe4ce]" />
                     <div className="space-y-3 p-5">
@@ -360,7 +368,7 @@ export default function SearchPage() {
                 ))}
               </div>
             ) : error ? (
-              <div className="mt-8 rounded-2xl border border-dashed border-[#8b1e2d]/35 bg-[#fbf6e9] px-6 py-20 text-center">
+              <div className="mt-8 border border-dashed border-[#8b1e2d]/35 bg-[#fbf6e9] px-6 py-20 text-center">
                 <SearchIcon className="mx-auto h-10 w-10 text-[#8b1e2d]" />
 
                 <h2 className="mt-5 font-serif text-3xl font-semibold text-[#4a211c]">
@@ -379,7 +387,7 @@ export default function SearchPage() {
                   return (
                     <article
                       key={product.id}
-                      className="group overflow-hidden rounded-xl border border-[#b08a4a]/30 bg-[#fbf6e9] shadow-[0_8px_25px_rgba(67,35,25,0.04)] transition hover:-translate-y-1 hover:shadow-[0_14px_35px_rgba(67,35,25,0.1)]"
+                      className="group overflow-hidden border border-[#b08a4a]/30 bg-[#fbf6e9] shadow-[0_8px_25px_rgba(67,35,25,0.04)] transition hover:-translate-y-1 hover:shadow-[0_14px_35px_rgba(67,35,25,0.1)]"
                     >
                       <div className="relative overflow-hidden">
                         <Link href={`/product/${product.slug}`}>
@@ -454,7 +462,7 @@ export default function SearchPage() {
                 })}
               </div>
             ) : (
-              <div className="mt-8 rounded-2xl border border-dashed border-[#b08a4a]/45 bg-[#fbf6e9] px-6 py-20 text-center">
+              <div className="mt-8 border border-dashed border-[#b08a4a]/45 bg-[#fbf6e9] px-6 py-20 text-center">
                 <SearchIcon className="mx-auto h-10 w-10 text-[#8b1e2d]" />
 
                 <h2 className="mt-5 font-serif text-3xl font-semibold text-[#4a211c]">
@@ -487,7 +495,7 @@ export default function SearchPage() {
           </section>
         )}
 
-        <section className="mt-14 overflow-hidden rounded-2xl border border-[#b08a4a]/30 bg-[#8b1e2d]">
+        <section className="mt-14 overflow-hidden border border-[#b08a4a]/30 bg-[#8b1e2d]">
           <div className="flex flex-col gap-6 px-7 py-9 sm:px-10 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#e5c98b]">

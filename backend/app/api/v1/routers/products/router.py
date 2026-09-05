@@ -1,4 +1,4 @@
-﻿from uuid import UUID
+from uuid import UUID
 
 from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -37,6 +37,7 @@ async def list_products(
     min_price: float | None = Query(default=None, ge=0),
     max_price: float | None = Query(default=None, ge=0),
     is_featured: bool | None = None,
+    search: str | None = Query(default=None, min_length=1, max_length=120),
     db: AsyncSession = Depends(get_db),
 ):
     products, _ = await service.list_products(
@@ -47,6 +48,7 @@ async def list_products(
         artisan_id=artisan_id,
         min_price=min_price,
         max_price=max_price,
+        search=search,
         is_active=True,
         is_featured=is_featured,
         status_value="Approved",

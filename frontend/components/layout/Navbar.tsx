@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -12,17 +12,19 @@ import {
   LogOut,
 } from "lucide-react";
 import { authApi } from "@/lib/api/auth";
+import { useI18n } from "@/lib/i18n/context";
 
 const links = [
-  { label: "Home", href: "/" },
-  { label: "Shop", href: "/shop" },
-  { label: "Artisans", href: "/artisans" },
-  { label: "Join as Artisan", href: "/artisan" },
-  { label: "Craft Heritage", href: "/craft-heritage" },
-  { label: "Our Story", href: "/our-story" },
-];
+  { key: "home", href: "/" },
+  { key: "shop", href: "/shop" },
+  { key: "artisans", href: "/artisans" },
+  { key: "joinAsArtisan", href: "/artisan" },
+  { key: "craftHeritage", href: "/craft-heritage" },
+  { key: "ourStory", href: "/our-story" },
+] as const;
 
 export default function Navbar() {
+  const { messages } = useI18n();
   const [authenticated, setAuthenticated] = useState(false);
   const [checkingAuth, setCheckingAuth] = useState(true);
 
@@ -82,7 +84,7 @@ export default function Navbar() {
               href={link.href}
               className="text-sm font-medium text-brown transition-colors hover:text-maroon"
             >
-              {link.label}
+              {messages.navigation[link.key]}
             </Link>
           ))}
         </div>
@@ -111,7 +113,7 @@ export default function Navbar() {
                 className="hidden items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-brown transition-colors hover:bg-parchment hover:text-maroon xl:flex"
               >
                 <LogIn className="h-4 w-4" />
-                Login
+                {messages.common.login}
               </Link>
 
               <Link
@@ -119,7 +121,7 @@ export default function Navbar() {
                 className="hidden items-center gap-2 rounded-full border border-gold px-4 py-2 text-sm font-medium text-maroon transition-colors hover:bg-gold hover:text-cream xl:flex"
               >
                 <UserPlus className="h-4 w-4" />
-                Create Account
+                {messages.common.createAccount}
               </Link>
 
               <Link
@@ -139,7 +141,7 @@ export default function Navbar() {
                 className="hidden items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-brown transition-colors hover:bg-parchment hover:text-maroon xl:flex"
               >
                 <User className="h-4 w-4" />
-                My Account
+                {messages.common.myAccount}
               </Link>
 
               <button
@@ -148,7 +150,7 @@ export default function Navbar() {
                 className="hidden items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-brown transition-colors hover:bg-parchment hover:text-maroon xl:flex"
               >
                 <LogOut className="h-4 w-4" />
-                Logout
+                {messages.common.logout}
               </button>
 
               <Link

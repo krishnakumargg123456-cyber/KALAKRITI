@@ -1,6 +1,7 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
+import { useI18n } from "@/lib/i18n/context";
 import {
   ArrowRight,
   Crown,
@@ -12,55 +13,68 @@ import {
 const craftRegions = [
   { name: "Kashmir", craft: "Pashmina & Papier-Mâché", top: "9%", left: "47%" },
   { name: "Punjab", craft: "Phulkari Embroidery", top: "22%", left: "42%" },
-  { name: "Rajasthan", craft: "Blue Pottery & Block Print", top: "34%", left: "30%" },
+  {
+    name: "Rajasthan",
+    craft: "Blue Pottery & Block Print",
+    top: "34%",
+    left: "30%",
+  },
   { name: "Gujarat", craft: "Bandhani & Embroidery", top: "53%", left: "25%" },
   { name: "Maharashtra", craft: "Warli Art", top: "58%", left: "42%" },
   { name: "Madhya Pradesh", craft: "Gond Art", top: "48%", left: "51%" },
-  { name: "Uttar Pradesh", craft: "Banarasi Weaving & Chikankari", top: "37%", left: "58%" },
+  {
+    name: "Uttar Pradesh",
+    craft: "Banarasi Weaving & Chikankari",
+    top: "37%",
+    left: "58%",
+  },
   { name: "Bihar", craft: "Madhubani Painting", top: "43%", left: "66%" },
-  { name: "West Bengal", craft: "Kantha & Terracotta", top: "50%", left: "73%" },
+  {
+    name: "West Bengal",
+    craft: "Kantha & Terracotta",
+    top: "50%",
+    left: "73%",
+  },
   { name: "Odisha", craft: "Pattachitra", top: "59%", left: "66%" },
-  { name: "Andhra Pradesh", craft: "Kalamkari & Kondapalli Toys", top: "69%", left: "58%" },
+  {
+    name: "Andhra Pradesh",
+    craft: "Kalamkari & Kondapalli Toys",
+    top: "69%",
+    left: "58%",
+  },
   { name: "Tamil Nadu", craft: "Tanjore & Bronze", top: "85%", left: "55%" },
 ];
 
 export default function HeritageSection() {
+  const { messages } = useI18n();
   return (
-    <section className="relative overflow-hidden bg-paper py-20 md:py-24">
+    <section className="relative overflow-hidden bg-[#f4ead8] py-24 md:py-32">
       <div className="pointer-events-none absolute inset-0 opacity-30">
-        <div className="absolute -left-24 top-16 h-72 w-72 rounded-full border border-gold/40" />
-        <div className="absolute right-[-120px] bottom-[-100px] h-96 w-96 rounded-full border border-maroon/20" />
+        <div className="absolute -left-28 top-20 h-72 w-72 rounded-full border border-[#b08d57]/30" />
+        <div className="absolute -right-32 bottom-0 h-96 w-96 rounded-full border border-[#641f20]/10" />
       </div>
 
-      <div className="kalakriti-container relative px-4">
-        <div className="grid overflow-hidden rounded-card border border-gold bg-cream shadow-card md:grid-cols-2">
-
-          {/* INDIA MAP */}
-          <div className="relative min-h-[560px] overflow-hidden border-b border-gold/50 bg-parchment md:border-b-0 md:border-r">
-
-            {/* Decorative rings */}
+      <div className="kalakriti-container relative px-5 md:px-8">
+        <div className="grid overflow-hidden border border-[#b08d57]/60 bg-[#fffaf0] shadow-[0_20px_60px_rgba(69,21,23,0.08)] md:grid-cols-2">
+          <div className="relative min-h-[580px] overflow-hidden border-b border-[#b08d57]/40 bg-[#fbf7ee] md:border-b-0 md:border-r">
             <div className="pointer-events-none absolute inset-0">
-              <div className="absolute left-1/2 top-1/2 h-[470px] w-[470px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-gold/20" />
-              <div className="absolute left-1/2 top-1/2 h-[390px] w-[390px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-maroon/15" />
-              <div className="absolute left-1/2 top-1/2 h-[310px] w-[310px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-gold/25" />
+              <div className="absolute left-1/2 top-1/2 h-[480px] w-[480px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#b08d57]/15" />
+              <div className="absolute left-1/2 top-1/2 h-[390px] w-[390px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#641f20]/10" />
+              <div className="absolute left-1/2 top-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#b08d57]/20" />
             </div>
 
-            {/* Header badge */}
-            <div className="absolute left-6 top-6 z-40 flex items-center gap-2 rounded-full border border-gold/60 bg-cream/95 px-4 py-2 shadow-soft">
-              <Sparkles className="h-4 w-4 text-gold" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-maroon">
-                Living Heritage
+            <div className="absolute left-6 top-6 z-40 flex items-center gap-2 border border-[#b08d57]/60 bg-[#fffaf0]/95 px-4 py-2">
+              <Sparkles className="h-4 w-4 text-[#b08d57]" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#641f20]">
+                {messages.home.indiaLivingHeritage}
               </span>
             </div>
 
-            {/* Map container */}
             <div className="absolute left-1/2 top-[51%] h-[470px] w-[350px] -translate-x-1/2 -translate-y-1/2 md:h-[500px] md:w-[370px]">
-
-              {/* Golden India silhouette */}
               <svg
                 viewBox="0 0 350 500"
-                className="absolute inset-0 h-full w-full drop-shadow-[0_8px_14px_rgba(83,28,24,0.16)]"
-                aria-label="Map of India showing craft regions"
+                className="absolute inset-0 h-full w-full drop-shadow-[0_8px_14px_rgba(83,28,24,0.14)]"
+                aria-label="Illustrated map of India showing craft regions"
               >
                 <defs>
                   <linearGradient id="indiaGold" x1="0" y1="0" x2="1" y2="1">
@@ -102,7 +116,6 @@ export default function HeritageSection() {
                   </pattern>
                 </defs>
 
-                {/* India */}
                 <path
                   d="M153 18
                     L177 25 L192 39 L207 47 L217 61
@@ -126,7 +139,6 @@ export default function HeritageSection() {
                   strokeLinejoin="round"
                 />
 
-                {/* Decorative inner map */}
                 <path
                   d="M153 31
                     L174 38 L188 51 L202 59 L212 72
@@ -149,7 +161,6 @@ export default function HeritageSection() {
                   opacity="0.95"
                 />
 
-                {/* Regional decorative divisions */}
                 <path
                   d="M80 155 Q145 145 205 160 T270 150
                      M61 225 Q140 215 215 230 T278 215
@@ -163,7 +174,6 @@ export default function HeritageSection() {
                   opacity="0.3"
                 />
 
-                {/* North star */}
                 <path
                   d="M155 53 L160 66 L174 69 L162 77 L164 91 L155 83 L144 91 L147 77 L136 69 L150 66 Z"
                   fill="#fff4ca"
@@ -172,7 +182,6 @@ export default function HeritageSection() {
                 />
               </svg>
 
-              {/* Craft markers */}
               {craftRegions.map((region) => (
                 <div
                   key={region.name}
@@ -183,22 +192,23 @@ export default function HeritageSection() {
                   }}
                 >
                   <div className="group relative">
-                    <span className="absolute left-1/2 top-1/2 h-7 w-7 -translate-x-1/2 -translate-y-1/2 animate-ping rounded-full bg-gold/25" />
+                    <span className="absolute left-1/2 top-1/2 h-6 w-6 -translate-x-1/2 -translate-y-1/2 animate-ping rounded-full bg-[#b08d57]/20" />
 
                     <MapPin
-                      className="relative h-5 w-5 -translate-x-1/2 cursor-pointer text-maroon drop-shadow-md transition-all duration-300 group-hover:scale-150 group-hover:text-deep-maroon"
+                      className="relative h-5 w-5 -translate-x-1/2 cursor-pointer text-[#641f20] drop-shadow-md transition-all duration-300 group-hover:scale-150"
                       fill="#d6aa4c"
                       strokeWidth={1.8}
                     />
 
-                    <div className="pointer-events-none absolute bottom-7 left-1/2 z-50 w-44 -translate-x-1/2 scale-95 rounded-lg border border-gold bg-cream p-3 opacity-0 shadow-elevated transition-all duration-200 group-hover:scale-100 group-hover:opacity-100">
+                    <div className="pointer-events-none absolute bottom-7 left-1/2 z-50 w-44 -translate-x-1/2 scale-95 border border-[#b08d57]/70 bg-[#fffaf0] p-3 opacity-0 shadow-[0_15px_35px_rgba(69,21,23,0.15)] transition-all duration-200 group-hover:scale-100 group-hover:opacity-100">
                       <div className="mb-1 flex items-center gap-1.5">
-                        <span className="h-1.5 w-1.5 rounded-full bg-gold" />
-                        <p className="font-serif text-xs font-bold text-maroon">
+                        <span className="h-1.5 w-1.5 rounded-full bg-[#b08d57]" />
+                        <p className="font-serif text-xs font-bold text-[#641f20]">
                           {region.name}
                         </p>
                       </div>
-                      <p className="text-[10px] leading-4 text-brown">
+
+                      <p className="text-[10px] leading-4 text-[#75665b]">
                         {region.craft}
                       </p>
                     </div>
@@ -206,83 +216,87 @@ export default function HeritageSection() {
                 </div>
               ))}
 
-              {/* Center emblem */}
               <div className="absolute left-[48%] top-[52%] z-20 -translate-x-1/2 -translate-y-1/2 text-center">
-                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-gold/70 bg-cream/80 shadow-soft backdrop-blur-sm">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full border border-maroon/30">
+                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-[#b08d57]/70 bg-[#fffaf0]/85 shadow-[0_10px_30px_rgba(69,21,23,0.10)] backdrop-blur-sm">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full border border-[#641f20]/25">
                     <Flower2
-                      className="h-9 w-9 text-gold"
+                      className="h-9 w-9 text-[#b08d57]"
                       strokeWidth={1}
                     />
                   </div>
                 </div>
-                <p className="mt-2 font-serif text-sm font-bold tracking-wide text-maroon">
+
+                <p className="mt-2 font-serif text-sm font-bold tracking-wide text-[#641f20]">
                   KALAKRITI
                 </p>
-                <p className="text-[7px] font-semibold uppercase tracking-[0.22em] text-muted">
-                  Crafted in India
+
+                <p className="text-[7px] font-semibold uppercase tracking-[0.22em] text-[#75665b]">
+                  {messages.home.craftedInIndia}
                 </p>
               </div>
             </div>
 
-            {/* Bottom label */}
-            <div className="absolute bottom-6 left-1/2 z-40 -translate-x-1/2 rounded-full border border-gold/60 bg-cream/95 px-5 py-2 shadow-soft">
-              <p className="flex items-center gap-2 whitespace-nowrap text-[9px] font-bold uppercase tracking-[0.18em] text-maroon">
-                <Crown className="h-3.5 w-3.5 text-gold" />
-                Many regions · One heritage
+            <div className="absolute bottom-6 left-1/2 z-40 -translate-x-1/2 border border-[#b08d57]/60 bg-[#fffaf0]/95 px-5 py-2 shadow-sm">
+              <p className="flex items-center gap-2 whitespace-nowrap text-[9px] font-bold uppercase tracking-[0.18em] text-[#641f20]">
+                <Crown className="h-3.5 w-3.5 text-[#b08d57]" />
+                {messages.home.manyRegionsOneHeritage}
               </p>
             </div>
           </div>
 
-          {/* CONTENT */}
-          <div className="flex flex-col justify-center p-7 md:p-12">
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold">
-              Craft across India
-            </p>
+          <div className="flex flex-col justify-center p-7 md:p-12 lg:p-16">
+            <p className="kalakriti-eyebrow">{messages.home.exploreIndia}</p>
 
-            <h2 className="mt-3 font-serif text-4xl font-bold leading-tight text-deep-maroon md:text-5xl">
-              One country.
-              <span className="block text-maroon">
-                Countless traditions.
+            <h2 className="kalakriti-heading mt-4 text-4xl font-medium leading-tight md:text-5xl lg:text-6xl">
+              {messages.home.exploreIndiaTitle}
+              <span className="block text-[#7a3030]">
+                {messages.home.livingCraftHeritage}
               </span>
             </h2>
 
-            <p className="mt-6 text-sm leading-7 text-brown md:text-base">
-              India&apos;s craft heritage is woven into its landscapes,
+            <div className="mt-6 h-px w-16 bg-[#b08d57]" />
+
+            <p className="mt-7 text-sm leading-7 text-[#4f423b] md:text-base">
+              India&apos;s craft traditions are rooted in landscapes,
               communities, festivals, architecture, clothing, and everyday
               life.
             </p>
 
-            <p className="mt-4 text-sm leading-6 text-muted">
-              Discover the regions, techniques, stories, and communities behind
-              the handmade pieces brought together by Kalakriti.
+            <p className="mt-4 text-sm leading-7 text-[#75665b]">
+              Explore the regions and techniques behind handmade creations,
+              then follow the journey from place to craft to artisan story.
             </p>
 
-            <div className="mt-8 grid grid-cols-2 gap-3">
-              <div className="rounded-card border border-gold/40 bg-paper p-4">
-                <p className="font-serif text-2xl font-bold text-maroon">
-                  28+
-                </p>
-                <p className="mt-1 text-[11px] uppercase tracking-wider text-muted">
-                  Craft regions
-                </p>
-              </div>
+            <div className="mt-9 border-y border-[#b08d57]/25 py-6">
+              <div className="grid grid-cols-3 gap-4 text-center">
+                <div>
+                  <p className="font-serif text-xl text-[#641f20]">{messages.home.place}</p>
+                  <p className="mt-1 text-[9px] uppercase tracking-[0.15em] text-[#75665b]">
+                    Region
+                  </p>
+                </div>
 
-              <div className="rounded-card border border-gold/40 bg-paper p-4">
-                <p className="font-serif text-2xl font-bold text-maroon">
-                  1000s
-                </p>
-                <p className="mt-1 text-[11px] uppercase tracking-wider text-muted">
-                  Years of tradition
-                </p>
+                <div className="border-x border-[#b08d57]/25">
+                  <p className="font-serif text-xl text-[#641f20]">{messages.home.craft}</p>
+                  <p className="mt-1 text-[9px] uppercase tracking-[0.15em] text-[#75665b]">
+                    Tradition
+                  </p>
+                </div>
+
+                <div>
+                  <p className="font-serif text-xl text-[#641f20]">{messages.home.story}</p>
+                  <p className="mt-1 text-[9px] uppercase tracking-[0.15em] text-[#75665b]">
+                    Artisan
+                  </p>
+                </div>
               </div>
             </div>
 
             <Link
               href="/craft-heritage"
-              className="group mt-8 inline-flex w-fit items-center gap-2 rounded-card bg-maroon px-6 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-maroon-light hover:shadow-elevated"
+              className="group mt-8 inline-flex w-fit items-center gap-3 bg-[#641f20] px-6 py-3.5 text-sm font-semibold text-[#fffaf0] transition-all duration-300 hover:-translate-y-1 hover:bg-[#7a3030] hover:shadow-[0_15px_35px_rgba(69,21,23,0.16)]"
             >
-              Explore India&apos;s craft heritage
+              {messages.home.discoverCraftHeritage}
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>

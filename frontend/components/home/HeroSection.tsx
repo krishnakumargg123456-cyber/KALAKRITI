@@ -1,148 +1,98 @@
+"use client";
+
 import Link from "next/link";
-import {
-  ArrowRight,
-  Sparkles,
-  Flower2,
-  Palette,
-  Hand,
-} from "lucide-react";
+import { ArrowRight, Flower2, Hand, Sparkles } from "lucide-react";
+import { useI18n } from "@/lib/i18n/context";
 
 export default function HeroSection() {
-  return (
-    <section className="relative overflow-hidden border-b border-gold/50 bg-parchment">
-      <div className="pointer-events-none absolute inset-0 opacity-50">
-        <div className="absolute -left-28 top-10 h-80 w-80 rounded-full border border-gold/40" />
-        <div className="absolute -left-16 top-24 h-56 w-56 rounded-full border border-gold/30" />
-        <div className="absolute left-20 top-40 h-24 w-24 rounded-full border border-maroon/20" />
-        <div className="absolute -right-32 -top-20 h-96 w-96 rounded-full border border-maroon/20" />
-        <div className="absolute right-10 top-16 h-40 w-40 rounded-full border border-gold/30" />
-        <div className="absolute bottom-0 left-1/2 h-px w-2/3 -translate-x-1/2 bg-gold/30" />
-      </div>
+  const { messages } = useI18n();
 
-      <div className="kalakriti-container relative grid min-h-[680px] items-center gap-14 px-4 py-16 md:grid-cols-2 md:py-24">
-        <div className="max-w-2xl">
-          <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-gold/60 bg-cream/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-gold shadow-soft">
-            <Sparkles className="h-4 w-4" />
-            India&apos;s Living Craft Heritage
+  return (
+    <section className="relative min-h-[calc(100svh-72px)] overflow-hidden border-b border-[#b08d57]/30 bg-[#2b211d]">
+      <div
+        className="absolute inset-0 bg-cover bg-center transition-transform duration-[2000ms] ease-out hover:scale-[1.02]"
+        style={{
+          backgroundImage:
+            "linear-gradient(90deg, rgba(43,33,29,0.92) 0%, rgba(43,33,29,0.72) 42%, rgba(43,33,29,0.24) 100%), url('/images/home/hero-potter.jpg')",
+        }}
+      />
+
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_45%,rgba(216,188,122,0.12),transparent_30%)]" />
+
+      <div className="pointer-events-none absolute inset-5 border border-[#d8bc7a]/20 md:inset-8 lg:inset-10" />
+
+      <div className="pointer-events-none absolute left-7 top-7 h-16 w-16 border-l border-t border-[#d8bc7a]/70 md:left-10 md:top-10" />
+      <div className="pointer-events-none absolute right-7 top-7 h-16 w-16 border-r border-t border-[#d8bc7a]/70 md:right-10 md:top-10" />
+      <div className="pointer-events-none absolute bottom-7 left-7 h-16 w-16 border-b border-l border-[#d8bc7a]/70 md:bottom-10 md:left-10" />
+      <div className="pointer-events-none absolute bottom-7 right-7 h-16 w-16 border-b border-r border-[#d8bc7a]/70 md:bottom-10 md:right-10" />
+
+      <div className="kalakriti-container relative z-10 flex min-h-[calc(100svh-72px)] items-center px-6 py-20 md:px-10 lg:px-16">
+        <div className="max-w-3xl text-white">
+          <div className="mb-7 inline-flex items-center gap-3 border border-[#d8bc7a]/55 bg-[#451517]/45 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#f1d79d] backdrop-blur-sm">
+            <Sparkles className="h-3.5 w-3.5" />
+            {messages.home.heroEyebrow}
           </div>
 
-          <h1 className="font-serif text-5xl font-bold leading-[1.04] text-deep-maroon md:text-6xl lg:text-7xl">
-            Crafted by hands.
-            <span className="mt-3 block text-maroon">
-              Carried through generations.
+          <p className="mb-5 text-xs font-semibold uppercase tracking-[0.3em] text-[#d8bc7a]">
+            {messages.home.heroKicker}
+          </p>
+
+          <h1 className="font-serif text-5xl font-medium leading-[0.98] tracking-[-0.035em] text-[#fffaf0] sm:text-6xl md:text-7xl lg:text-[6.5rem]">
+            Every Craft
+            <span className="mt-2 block text-[#d8bc7a]">
+              Has a Story.
             </span>
           </h1>
 
-          <p className="mt-7 max-w-xl text-base leading-8 text-brown md:text-lg">
-            Discover authentic Indian handicrafts shaped by tradition,
-            patience, and generations of artisan knowledge.
+          <div className="mt-7 h-px w-24 bg-[#d8bc7a]" />
+
+          <p className="mt-7 max-w-2xl text-base leading-8 text-[#f4ead8] md:text-lg">
+            {messages.home.heroDescription}
           </p>
 
           <div className="mt-9 flex flex-wrap gap-4">
             <Link
               href="/shop"
-              className="inline-flex items-center gap-2 rounded-card bg-maroon px-7 py-3.5 text-sm font-semibold text-white shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:bg-maroon-light hover:shadow-card"
+              className="group inline-flex items-center gap-3 bg-[#641f20] px-7 py-4 text-sm font-semibold text-[#fffaf0] shadow-[0_12px_35px_rgba(0,0,0,0.22)] transition-all duration-300 hover:-translate-y-1 hover:bg-[#7a3030]"
             >
-              Explore the Collection
-              <ArrowRight className="h-4 w-4" />
+              {messages.home.heroExploreCrafts}
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
 
             <Link
-              href="/craft-heritage"
-              className="inline-flex items-center gap-2 rounded-card border border-gold bg-cream/50 px-7 py-3.5 text-sm font-semibold text-maroon transition-all duration-300 hover:-translate-y-0.5 hover:bg-gold/10"
+              href="/artisans"
+              className="inline-flex items-center gap-3 border border-[#d8bc7a]/70 bg-[#fffaf0]/5 px-7 py-4 text-sm font-semibold text-[#fffaf0] backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:bg-[#fffaf0]/10"
             >
-              Explore Craft Heritage
+              {messages.home.heroMeetArtisans}
             </Link>
           </div>
 
-          <div className="mt-12 grid max-w-xl grid-cols-3 gap-4 border-t border-gold/40 pt-7">
-            <div>
-              <p className="font-serif text-2xl font-bold text-deep-maroon">
-                100%
-              </p>
-              <p className="mt-1 text-xs uppercase tracking-[0.14em] text-muted">
-                Handcrafted
-              </p>
-            </div>
-
-            <div className="border-x border-gold/30 px-4">
-              <p className="font-serif text-2xl font-bold text-deep-maroon">
-                India
-              </p>
-              <p className="mt-1 text-xs uppercase tracking-[0.14em] text-muted">
-                Rooted in heritage
-              </p>
+          <div className="mt-12 flex items-center gap-5 text-[#d8bc7a]">
+            <div className="flex h-11 w-11 items-center justify-center border border-[#d8bc7a]/50">
+              <Hand className="h-5 w-5" />
             </div>
 
             <div>
-              <p className="font-serif text-2xl font-bold text-deep-maroon">
-                Generations
+              <p className="font-serif text-lg text-[#fffaf0]">
+                {messages.home.heroMadeByHumanHands}
               </p>
-              <p className="mt-1 text-xs uppercase tracking-[0.14em] text-muted">
-                Artisan knowledge
+              <p className="mt-1 text-xs uppercase tracking-[0.18em] text-[#d8bc7a]/90">
+                {messages.home.heroCraftValues}
               </p>
             </div>
           </div>
         </div>
+      </div>
 
-        <div className="relative mx-auto w-full max-w-lg">
-          <div className="absolute -inset-5 rounded-[2.5rem] border border-gold/30" />
-          <div className="absolute -inset-10 rounded-[3rem] border border-maroon/10" />
-
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border-2 border-gold bg-cream shadow-elevated">
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{
-                backgroundImage: "url('/images/home/hero-potter.jpg')",
-              }}
-            />
-
-            <div className="absolute left-1/2 top-[66%] h-48 w-48 -translate-x-1/2 -translate-y-1/2 rounded-full border border-gold/50" />
-            <div className="absolute left-1/2 top-[66%] h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full border border-maroon/25" />
-            <div className="absolute left-1/2 top-[66%] h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full border border-gold/60" />
-
-            <div className="absolute left-6 top-16 flex h-10 w-10 rotate-45 items-center justify-center border border-gold/50 bg-cream/70">
-              <Flower2 className="h-5 w-5 -rotate-45 text-maroon/80" />
-            </div>
-
-            <div className="absolute right-6 top-16 flex h-10 w-10 -rotate-45 items-center justify-center border border-gold/50 bg-cream/70">
-              <Palette className="h-5 w-5 rotate-45 text-maroon/80" />
-            </div>
-
-            <div className="absolute bottom-20 left-6 flex h-10 w-10 -rotate-45 items-center justify-center border border-gold/50 bg-cream/70">
-              <Hand className="h-5 w-5 rotate-45 text-maroon/80" />
-            </div>
-
-            <div className="absolute bottom-20 right-6 flex h-10 w-10 rotate-45 items-center justify-center border border-gold/50 bg-cream/70">
-              <Flower2 className="h-5 w-5 -rotate-45 text-maroon/80" />
-            </div>
-
-            <div className="absolute bottom-0 left-0 right-0 border-t border-gold/50 bg-cream/95 px-7 py-6 text-center backdrop-blur-sm">
-              <p className="font-serif text-2xl font-semibold text-deep-maroon">
-                Made by Hand
-              </p>
-
-              <p className="mt-2 text-sm leading-6 text-muted">
-                Every piece carries the character of the hand that created it.
-              </p>
-
-              <div className="mt-4 flex items-center justify-center gap-3 text-[10px] font-semibold uppercase tracking-[0.25em] text-gold">
-                <span className="h-px w-8 bg-gold" />
-                Kalakriti
-                <span className="h-px w-8 bg-gold" />
-              </div>
-            </div>
-          </div>
-
-          <div className="absolute -bottom-5 -left-5 hidden rounded-card border border-gold bg-paper px-5 py-4 shadow-card sm:block">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">
-              The craft of India
-            </p>
-            <p className="mt-1 font-serif text-base font-semibold text-deep-maroon">
-              Tradition • Skill • Story
-            </p>
-          </div>
+      <div className="absolute bottom-10 right-10 hidden text-right text-[#fffaf0]/80 lg:block">
+        <div className="mb-3 flex items-center justify-end gap-3 text-[#d8bc7a]">
+          <span className="h-px w-10 bg-[#d8bc7a]/70" />
+          <Flower2 className="h-4 w-4" />
         </div>
+        <p className="font-serif text-xl">{messages.home.heroCraftOfIndia}</p>
+        <p className="mt-1 text-[10px] uppercase tracking-[0.24em] text-[#d8bc7a]">
+          {messages.home.heroCraftJourney}
+        </p>
       </div>
     </section>
   );

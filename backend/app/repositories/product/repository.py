@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from uuid import UUID
 
@@ -30,11 +30,22 @@ class ProductRepository:
         is_active: bool | None = True,
         is_featured: bool | None = None,
         status: str | None = None,
+        search: str | None = None,
     ) -> list[Product]:
 
         stmt = select(Product).options(
             *self._product_options()
         )
+
+        if search:
+            search_term = f"%{search.strip()}%"
+            stmt = stmt.where(
+                Product.name.ilike(search_term)
+                | Product.slug.ilike(search_term)
+                | Product.description.ilike(search_term)
+                | Product.material.ilike(search_term)
+                | Product.craft_region.ilike(search_term)
+            )
 
         if category_id is not None:
             stmt = stmt.where(Product.category_id == category_id)
@@ -80,6 +91,16 @@ class ProductRepository:
     ) -> int:
 
         stmt = select(func.count(Product.id))
+
+        if search:
+            search_term = f"%{search.strip()}%"
+            stmt = stmt.where(
+                Product.name.ilike(search_term)
+                | Product.slug.ilike(search_term)
+                | Product.description.ilike(search_term)
+                | Product.material.ilike(search_term)
+                | Product.craft_region.ilike(search_term)
+            )
 
         if category_id is not None:
             stmt = stmt.where(Product.category_id == category_id)
@@ -156,6 +177,7 @@ class ProductRepository:
         skip: int = 0,
         limit: int = 50,
         status: str | None = None,
+        search: str | None = None,
     ) -> list[Product]:
 
         stmt = (

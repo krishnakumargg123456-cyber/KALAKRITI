@@ -1,4 +1,4 @@
-﻿from decimal import Decimal
+from decimal import Decimal
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -115,6 +115,7 @@ class ProductResponse(BaseModel):
 
     artisan_name: str | None = None
     category_name: str | None = None
+    category_slug: str | None = None
 
     stock: int = 0
     available_stock: int = 0

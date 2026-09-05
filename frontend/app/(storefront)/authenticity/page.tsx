@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import {
   ArrowRight,
   BadgeCheck,
@@ -50,7 +50,7 @@ export default function AuthenticityPage() {
       <section className="relative overflow-hidden border-b border-[#b08a4a]/30 bg-[#8b1e2d]">
         <div className="mx-auto max-w-7xl px-6 py-16 sm:px-8 lg:px-12 lg:py-24">
           <div className="max-w-4xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#e5c98b]/30 bg-[#fff8eb]/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-[#e5c98b]">
+            <div className="inline-flex items-center gap-2 border border-[#e5c98b]/30 bg-[#fff8eb]/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-[#e5c98b]">
               <ShieldCheck className="h-4 w-4" />
               Our Authenticity Promise
             </div>
@@ -112,8 +112,8 @@ export default function AuthenticityPage() {
             </div>
           </div>
 
-          <div className="relative rounded-3xl border border-[#b08a4a]/30 bg-[#efe4ce]/70 p-7 sm:p-8">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#8b1e2d] text-[#fff8eb]">
+          <div className="relative border border-[#b08a4a]/30 bg-[#efe4ce]/70 p-7 sm:p-8">
+            <div className="flex h-14 w-14 items-center justify-center border border-[#e5c98b]/20 bg-[#8b1e2d] text-[#fff8eb]">
               <BadgeCheck className="h-7 w-7" />
             </div>
 
@@ -156,10 +156,10 @@ export default function AuthenticityPage() {
               return (
                 <article
                   key={step.number}
-                  className="group rounded-2xl border border-[#b08a4a]/30 bg-[#fbf6e9] p-7 transition hover:-translate-y-1 hover:border-[#8b1e2d]/40 hover:shadow-[0_16px_35px_rgba(67,35,25,0.07)]"
+                  className="group border border-[#b08a4a]/30 bg-[#fbf6e9] p-7 transition hover:-translate-y-1 hover:border-[#8b1e2d]/40 hover:shadow-[0_16px_35px_rgba(67,35,25,0.07)]"
                 >
                   <div className="flex items-start justify-between">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#efe4ce] text-[#8b1e2d]">
+                    <div className="flex h-12 w-12 items-center justify-center border border-[#b08a4a]/20 bg-[#efe4ce] text-[#8b1e2d]">
                       <Icon className="h-6 w-6" />
                     </div>
 
@@ -181,7 +181,7 @@ export default function AuthenticityPage() {
           </div>
         </section>
 
-        <section className="mt-16 overflow-hidden rounded-3xl border border-[#b08a4a]/30 bg-[#fbf6e9]">
+        <section className="mt-16 overflow-hidden border border-[#b08a4a]/30 bg-[#fbf6e9]">
           <div className="grid lg:grid-cols-[0.8fr_1.2fr]">
             <div className="bg-[#8b1e2d] p-8 sm:p-10 lg:p-12">
               <Sparkles className="h-8 w-8 text-[#e5c98b]" />
@@ -213,7 +213,7 @@ export default function AuthenticityPage() {
         </section>
 
         <section className="mt-16 grid gap-8 lg:grid-cols-2">
-          <div className="rounded-2xl border border-[#b08a4a]/30 bg-[#efe4ce]/60 p-7 sm:p-9">
+          <div className="border border-[#b08a4a]/30 bg-[#efe4ce]/60 p-7 sm:p-9">
             <MapPin className="h-7 w-7 text-[#8b1e2d]" />
 
             <h2 className="mt-5 font-serif text-3xl font-semibold text-[#4a211c]">
@@ -235,7 +235,7 @@ export default function AuthenticityPage() {
             </Link>
           </div>
 
-          <div className="rounded-2xl border border-[#b08a4a]/30 bg-[#fbf6e9] p-7 sm:p-9">
+          <div className="border border-[#b08a4a]/30 bg-[#fbf6e9] p-7 sm:p-9">
             <Fingerprint className="h-7 w-7 text-[#8b1e2d]" />
 
             <h2 className="mt-5 font-serif text-3xl font-semibold text-[#4a211c]">
@@ -258,7 +258,7 @@ export default function AuthenticityPage() {
           </div>
         </section>
 
-        <section className="mt-16 rounded-3xl bg-[#8b1e2d] px-7 py-12 text-center sm:px-10 lg:py-14">
+        <section className="mt-16 border border-[#b08a4a]/40 bg-[#8b1e2d] px-7 py-12 text-center sm:px-10 lg:py-14">
           <ShieldCheck className="mx-auto h-8 w-8 text-[#e5c98b]" />
 
           <h2 className="mx-auto mt-5 max-w-3xl font-serif text-3xl font-semibold text-[#fff8eb] sm:text-4xl">

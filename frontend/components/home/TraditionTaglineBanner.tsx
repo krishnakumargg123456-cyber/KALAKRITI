@@ -1,6 +1,8 @@
-﻿import { Flower2, Sparkles } from "lucide-react";
+import { useI18n } from "@/lib/i18n/context";
+import { Flower2, Sparkles } from "lucide-react";
 
 export default function TraditionTaglineBanner() {
+  const { messages } = useI18n();
   return (
     <section className="relative overflow-hidden border-y border-gold bg-maroon py-12 text-center text-white md:py-14">
       <div className="pointer-events-none absolute inset-0 opacity-20">
@@ -37,7 +39,7 @@ export default function TraditionTaglineBanner() {
 
         <div className="mt-5 flex items-center justify-center gap-2 text-[9px] font-semibold uppercase tracking-[0.3em] text-gold-light/90 md:text-[10px]">
           <Sparkles className="h-3.5 w-3.5" />
-          <span>Preserve · Celebrate · Carry Forward</span>
+          <span>{messages.home.taglineValues}</span>
           <Sparkles className="h-3.5 w-3.5" />
         </div>
       </div>

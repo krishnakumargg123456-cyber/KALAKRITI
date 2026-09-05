@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -44,6 +44,11 @@ type Product = {
     name?: string;
     slug?: string;
   } | null;
+  category_slug?: string | null;
+  craft_region?: string | null;
+  material?: string | null;
+  dimensions?: string | null;
+  sku?: string | null;
   artisan?: {
     id?: string | number;
     name?: string;
@@ -428,42 +433,58 @@ export default function ProductDetailPage() {
             </div>
 
             {product.artisan && (
-              <div className="mt-6 rounded-xl border border-gold/30 bg-parchment p-5">
-                <p className="text-xs uppercase tracking-[0.2em] text-gold">
-                  Handcrafted by
-                </p>
+              <div className="relative mt-7 overflow-hidden border border-gold/30 bg-parchment p-6 sm:p-7">
+                <div className="pointer-events-none absolute inset-2 border border-gold/15" />
 
-                <div className="mt-2 flex items-center justify-between gap-4">
-                  <div>
-                    <p className="font-serif text-xl font-bold text-maroon-deep">
-                      {product.artisan.full_name ||
-                        product.artisan.name ||
-                        "KALAKRITI Artisan"}
+                <div className="relative">
+                  <div className="flex items-center gap-3">
+                    <span className="h-px w-8 bg-gold" />
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-gold">
+                      The Maker
                     </p>
-
-                    {(product.artisan.city ||
-                      product.artisan.state) && (
-                      <p className="mt-1 flex items-center gap-1 text-sm text-brown">
-                        <MapPin size={14} />
-
-                        {[
-                          product.artisan.city,
-                          product.artisan.state,
-                        ]
-                          .filter(Boolean)
-                          .join(", ")}
-                      </p>
-                    )}
                   </div>
 
-                  {product.artisan.slug && (
-                    <Link
-                      href={`/artisans/${product.artisan.slug}`}
-                      className="text-sm font-semibold text-maroon underline"
-                    >
-                      View Artisan
-                    </Link>
-                  )}
+                  <div className="mt-4 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.18em] text-maroon/60">
+                        Handcrafted by
+                      </p>
+
+                      <p className="mt-1 font-serif text-2xl font-bold text-maroon-deep">
+                        {product.artisan.full_name ||
+                          product.artisan.name ||
+                          "KALAKRITI Artisan"}
+                      </p>
+
+                      {(product.artisan.city ||
+                        product.artisan.state) && (
+                        <p className="mt-2 flex items-center gap-2 text-sm text-brown">
+                          <MapPin size={15} />
+                          {[
+                            product.artisan.city,
+                            product.artisan.state,
+                          ]
+                            .filter(Boolean)
+                            .join(", ")}
+                        </p>
+                      )}
+
+                      <p className="mt-4 max-w-md text-sm leading-6 text-brown/80">
+                        Meet the person behind this piece and discover the
+                        craft, place and tradition that shape their work.
+                      </p>
+                    </div>
+
+                    {product.artisan.slug && (
+                      <Link
+                        href={`/artisans/${product.artisan.slug}`}
+                        className="inline-flex shrink-0 items-center justify-center border border-maroon/25 bg-white/60 px-5 py-3 text-sm font-semibold text-maroon transition hover:border-gold hover:bg-[#fffaf0]"
+                      >
+                        View Artisan
+                        <ArrowLeft className="ml-2 h-4 w-4 rotate-180" />
+                      </Link>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
@@ -587,6 +608,86 @@ export default function ProductDetailPage() {
           </section>
         </div>
 
+        {(product.category?.name ||
+          product.craft_region ||
+          product.material ||
+          product.dimensions ||
+          product.sku) && (
+          <section className="mt-16 border-t border-maroon/10 pt-12">
+            <div className="mb-8">
+              <p className="text-xs uppercase tracking-[0.25em] text-gold">
+                Craft Details
+              </p>
+
+              <h2 className="mt-3 font-serif text-3xl font-bold text-maroon-deep">
+                The details behind the piece
+              </h2>
+
+              <p className="mt-3 max-w-2xl leading-7 text-brown">
+                Each detail connects this piece to its craft tradition,
+                region and making story.
+              </p>
+            </div>
+
+            <div className="grid overflow-hidden border border-gold/30 bg-parchment sm:grid-cols-2 lg:grid-cols-3">
+              {product.category?.name && (
+                <div className="border-b border-gold/20 p-6 sm:border-r">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">
+                    Craft
+                  </p>
+                  <p className="mt-2 font-serif text-xl font-semibold text-maroon-deep">
+                    {product.category.name}
+                  </p>
+                </div>
+              )}
+
+              {product.craft_region && (
+                <div className="border-b border-gold/20 p-6 lg:border-r">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">
+                    Region
+                  </p>
+                  <p className="mt-2 font-serif text-xl font-semibold text-maroon-deep">
+                    {product.craft_region}
+                  </p>
+                </div>
+              )}
+
+              {product.material && (
+                <div className="border-b border-gold/20 p-6 sm:border-r lg:border-r-0">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">
+                    Material
+                  </p>
+                  <p className="mt-2 text-base font-medium text-brown">
+                    {product.material}
+                  </p>
+                </div>
+              )}
+
+              {product.dimensions && (
+                <div className="border-b border-gold/20 p-6 sm:border-r lg:border-b-0">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">
+                    Dimensions
+                  </p>
+                  <p className="mt-2 text-base font-medium text-brown">
+                    {product.dimensions}
+                  </p>
+                </div>
+              )}
+
+              {product.sku && (
+                <div className="p-6 sm:col-span-2 lg:col-span-2 lg:border-l lg:border-gold/20">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">
+                    KALAKRITI Product ID
+                  </p>
+                  <p className="mt-2 font-mono text-sm font-medium tracking-wide text-maroon">
+                    {product.sku}
+                  </p>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
         <section className="mt-20 border-t border-maroon/10 pt-12">
           <div className="grid gap-10 md:grid-cols-2">
 
@@ -605,6 +706,16 @@ export default function ProductDetailPage() {
                 home, each piece celebrates techniques, stories and traditions
                 passed down through generations.
               </p>
+
+              {product.category_slug && (
+                <Link
+                  href={`/craft-heritage/${product.category_slug}`}
+                  className="mt-7 inline-flex items-center gap-2 border-b border-gold pb-2 text-sm font-semibold tracking-wide text-maroon transition hover:border-maroon hover:text-maroon-deep"
+                >
+                  Explore the Craft Heritage
+                  <ArrowLeft className="h-4 w-4 rotate-180" />
+                </Link>
+              )}
             </div>
 
             <div className="rounded-2xl border border-gold/30 bg-parchment p-7">

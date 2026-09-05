@@ -1,20 +1,25 @@
+"use client";
+
 import Link from "next/link";
-
-const exploreLinks = [
-  ["Shop", "/shop"],
-  ["Artisans", "/artisans"],
-  ["Craft Heritage", "/craft-heritage"],
-  ["Our Story", "/our-story"],
-];
-
-const helpLinks = [
-  ["Contact Us", "/contact"],
-  ["Shipping & Delivery", "/shipping"],
-  ["Returns", "/returns"],
-  ["FAQs", "/faq"],
-];
+import { useI18n } from "@/lib/i18n/context";
 
 export default function Footer() {
+  const { messages } = useI18n();
+
+  const exploreLinks = [
+    [messages.footer.shop, "/shop"],
+    [messages.footer.artisans, "/artisans"],
+    [messages.footer.craftHeritage, "/craft-heritage"],
+    [messages.footer.ourStory, "/our-story"],
+  ];
+
+  const helpLinks = [
+    [messages.footer.contactUs, "/contact"],
+    [messages.footer.shippingDelivery, "/shipping"],
+    [messages.footer.returns, "/returns"],
+    [messages.footer.faqs, "/faq"],
+  ];
+
   return (
     <footer className="border-t border-gold/50 bg-maroon-deep text-white">
       <div className="kalakriti-container px-4 py-14 md:py-16">
@@ -25,14 +30,13 @@ export default function Footer() {
             </h2>
 
             <p className="mt-4 max-w-xs text-sm leading-6 text-white/70">
-              Discover authentic Indian handicrafts and the stories of the
-              artisans who keep India&apos;s living craft traditions alive.
+              {messages.footer.description}
             </p>
           </div>
 
           <div>
             <h3 className="font-serif text-lg text-gold-light">
-              Explore
+              {messages.footer.explore}
             </h3>
 
             <div className="mt-4 space-y-3">
@@ -50,7 +54,7 @@ export default function Footer() {
 
           <div>
             <h3 className="font-serif text-lg text-gold-light">
-              Help
+              {messages.footer.help}
             </h3>
 
             <div className="mt-4 space-y-3">
@@ -68,12 +72,11 @@ export default function Footer() {
 
           <div>
             <h3 className="font-serif text-lg text-gold-light">
-              Our Promise
+              {messages.footer.ourPromise}
             </h3>
 
             <p className="mt-4 text-sm leading-6 text-white/70">
-              Every purchase supports Indian artisans and helps preserve
-              generations of traditional craftsmanship.
+              {messages.footer.promiseDescription}
             </p>
           </div>
         </div>
@@ -82,10 +85,10 @@ export default function Footer() {
 
         <div className="mt-6 flex flex-col justify-between gap-3 text-xs text-white/50 md:flex-row">
           <p>
-            © {new Date().getFullYear()} Kalakriti. All rights reserved.
+            © {new Date().getFullYear()} Kalakriti. {messages.footer.copyright}
           </p>
 
-          <p>Made with respect for Indian craft heritage.</p>
+          <p>{messages.footer.heritageRespect}</p>
         </div>
       </div>
     </footer>

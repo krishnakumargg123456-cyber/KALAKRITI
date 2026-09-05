@@ -1,4 +1,5 @@
-﻿import type { Metadata } from "next";
+import { I18nProvider } from "@/lib/i18n/context";
+import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import AuthProvider from "@/components/auth/AuthProvider";
@@ -34,7 +35,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthProvider>{children}</AuthProvider>
+        <I18nProvider>
+        <AuthProvider>
+          {children}
+        </AuthProvider>
+      </I18nProvider>
       </body>
     </html>
   );

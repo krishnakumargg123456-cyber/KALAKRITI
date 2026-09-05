@@ -1,4 +1,4 @@
-﻿import uuid
+import uuid
 from decimal import Decimal
 from typing import TYPE_CHECKING
 
@@ -140,6 +140,10 @@ class Product(TimestampMixin, Base):
     @property
     def category_name(self) -> str | None:
         return self.category.name if self.category else None
+
+    @property
+    def category_slug(self) -> str | None:
+        return self.category.slug if self.category else None
 
     @property
     def stock(self) -> int:
