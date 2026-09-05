@@ -89,6 +89,9 @@ export default function Footer() {
           </p>
 
           <p>{messages.footer.heritageRespect}</p>
+          <p className="text-gold-light/80">
+            Created by Krishna &amp; Minakshi
+          </p>
         </div>
       </div>
     </footer>
